@@ -7,18 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Added
-- Unit test suite (31 tests via Vitest) covering BYOK header helpers (`buildHeaders`, `buildUserHeaders`), `handleResponse` error paths, and download-filename construction
-- `lib/filename.ts`: extracted pure filename-builder from `downloadOptimizedResume` for testability
-- `vitest.config.ts` with v8 coverage reporter configured for `app/**/*.ts` and `lib/**/*.ts`
-- `npm run test`, `npm run test:watch`, `npm run test:coverage` scripts
-
-### Changed
-- `buildHeaders`, `buildUserHeaders`, `handleResponse` are now named exports in `app/api.ts` (additive change; public API functions are unchanged)
-- `.npmrc` pinned to `https://registry.npmjs.org/` to avoid inheriting the global PeruNPM proxy
-- CI workflow runs `npm test` between type-check and build
-
-## [1.0.0] - 2026-04-24
+## [1.0.0] - 2026-04-26
 
 ### Added
 - Initial public release of Vanara.ai frontend (Next.js 15 + React 19)
@@ -37,11 +26,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Dark mode support (Tailwind CSS with `dark:` variants)
 - Framer Motion (`motion/react`) for landing and dashboard animations
 - Responsive design (mobile → desktop)
-- CI workflow (GitHub Actions): lint, type-check, build
+- CI workflow (GitHub Actions): lint, type-check, build, unit tests
+- Unit test suite (31 tests via Vitest) covering BYOK header helpers (`buildHeaders`, `buildUserHeaders`), `handleResponse` error paths, and download-filename construction
+- `lib/filename.ts`: extracted pure filename-builder from `downloadOptimizedResume` for testability
+- `vitest.config.ts` with v8 coverage reporter configured for `app/**/*.ts` and `lib/**/*.ts`
+- `npm run test`, `npm run test:watch`, `npm run test:coverage` scripts
 
 ### Security
 - Groq API key never transmitted to Vanara-owned servers; only to the backend endpoint the user points the app at
 - Auth tokens handled entirely by Supabase SDK; no token persistence in app code
+- `.npmrc` pinned to `https://registry.npmjs.org/` to avoid inheriting the global PeruNPM proxy
 
-[Unreleased]: https://github.com/vanara-ai/vanara-serverui/compare/v1.0.0...HEAD
-[1.0.0]: https://github.com/vanara-ai/vanara-serverui/releases/tag/v1.0.0
+[Unreleased]: https://github.com/vanara-ai/vanara-ui/compare/v1.0.0...HEAD
+[1.0.0]: https://github.com/vanara-ai/vanara-ui/releases/tag/v1.0.0

@@ -177,7 +177,7 @@ export default function ApiKeysModal({ open, onClose }: Props) {
                 browser talks to the backend, which forwards your request to
                 Groq and immediately discards the key. This codebase is{" "}
                 <a
-                  href="https://github.com/vanara-ai/vanara-serverui"
+                  href="https://github.com/vanara-ai/vanara-ui"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="underline underline-offset-4"

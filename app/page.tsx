@@ -15,7 +15,7 @@ import ThemeToggle from "./components/ThemeToggle";
 
 const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 const GITHUB_URL = "https://github.com/vanara-ai/vanara-server";
-const GITHUB_UI_URL = "https://github.com/vanara-ai/vanara-serverui";
+const GITHUB_UI_URL = "https://github.com/vanara-ai/vanara-ui";
 
 const fadeUp = {
   initial: { opacity: 0, y: 16 },

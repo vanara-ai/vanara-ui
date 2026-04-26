@@ -13,7 +13,8 @@ Users paste a Groq API key once (it stays in their browser) and upload a
 resume + job description to drive the multi-agent optimizer.
 
 **The backend lives in a sibling repo:
-[resumeai](https://github.com/vanara-ai/vanara-server).**
+[vanara-server](https://github.com/vanara-ai/vanara-server). You must have it
+running before starting the frontend — see the Quickstart below.**
 
 ## 🔑 BYOK
 
@@ -24,10 +25,15 @@ persisted server-side.
 
 ## 🚀 Quickstart
 
+> **⚠️ Start the backend first.** The frontend is a thin client; all
+> optimization happens in
+> [vanara-server](https://github.com/vanara-ai/vanara-server). Clone and
+> run that repo on port 8000 before launching the UI.
+
 ```bash
 # 1. clone
-git clone https://github.com/vanara-ai/vanara-serverui.git
-cd resumeaiui
+git clone https://github.com/vanara-ai/vanara-ui.git
+cd vanara-ui
 
 # 2. install
 npm install
@@ -35,7 +41,7 @@ npm install
 # 3. configure (Supabase is optional; see .env.example)
 cp .env.example .env.local
 
-# 4. run
+# 4. run (backend must already be up on :8000)
 npm run dev
 ```
 

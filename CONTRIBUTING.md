@@ -15,8 +15,8 @@ way to get oriented.
 ## Quick Start
 
 ```bash
-git clone https://github.com/vanara-ai/vanara-serverui.git
-cd resumeaiui
+git clone https://github.com/vanara-ai/vanara-ui.git
+cd vanara-ui
 npm install
 cp .env.example .env.local
 npm run dev
@@ -78,4 +78,4 @@ This project follows the [Contributor Covenant v2.1](CODE_OF_CONDUCT.md). By par
 
 ## Questions?
 
-Open an issue with the `question` label, or email sinduku1@depaul.edu.
+Open an issue with the `question` label, or email vanara.ai@yahoo.com.
