@@ -1,0 +1,175 @@
+@import "tailwindcss";
+
+/* ============================================================================
+   Vanara.ai Brand System — v1.0
+   ============================================================================
+   Primary: Terracotta Orange (#F4A261) — used in both light and dark modes.
+   Secondary: Forest Green (#2D5A3D) — used sparingly for success / confirmation.
+   
+   Dark mode activates via the `.dark` class on <html> (managed by ThemeContext).
+   Surface tokens scale from 0 (page bg) to 3 (highest elevation).
+   Text tokens scale primary -> secondary -> tertiary (body -> labels -> meta).
+   ============================================================================ */
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  /* Brand */
+  --brand: #F4A261;
+  --brand-hover: #E8914F;
+  --brand-active: #D17F3E;
+  --brand-soft: #FDEFE0;
+  --brand-ring: rgba(244, 162, 97, 0.4);
+
+  --accent: #2D5A3D;
+  --accent-hover: #1F4027;
+  --accent-soft: #E8F5E8;
+
+  /* Surfaces (light) */
+  --surface-0: #FEFDF8;
+  --surface-1: #FFFFFF;
+  --surface-2: #F9F5EC;
+  --surface-3: #F1EDE3;
+
+  /* Text (light) */
+  --text-primary: #1A1A1A;
+  --text-secondary: #4A4A4A;
+  --text-tertiary: #8A8A8A;
+
+  /* Borders (light) */
+  --border-subtle: #EDE7D9;
+  --border-default: #D9D2C1;
+  --border-strong: #A89F8C;
+
+  /* Semantic (light) */
+  --success: #2D5A3D;
+  --success-soft: #E8F5E8;
+  --warning: #D97706;
+  --warning-soft: #FEF3C7;
+  --danger: #B91C1C;
+  --danger-soft: #FEE2E2;
+}
+
+.dark {
+  /* Brand stays consistent — same hue, adjusted opacity contexts */
+  --brand: #F4A261;
+  --brand-hover: #F6B47E;
+  --brand-active: #FAC89F;
+  --brand-soft: #2A1D14;
+  --brand-ring: rgba(244, 162, 97, 0.5);
+
+  --accent: #7FB88D;
+  --accent-hover: #95C69F;
+  --accent-soft: #1A2D20;
+
+  /* Surfaces (dark) */
+  --surface-0: #0F0F0F;
+  --surface-1: #1A1A1A;
+  --surface-2: #242424;
+  --surface-3: #2E2E2E;
+
+  /* Text (dark) — warm off-whites, not pure white */
+  --text-primary: #F5F1E8;
+  --text-secondary: #B8B3A5;
+  --text-tertiary: #7A7568;
+
+  /* Borders (dark) */
+  --border-subtle: #2A2A2A;
+  --border-default: #3A3A3A;
+  --border-strong: #5A5A5A;
+
+  /* Semantic (dark) — lifted for contrast */
+  --success: #7FB88D;
+  --success-soft: #1A2D20;
+  --warning: #FBBF24;
+  --warning-soft: #2A1F0A;
+  --danger: #FCA5A5;
+  --danger-soft: #2A0F0F;
+}
+
+/* Tailwind theme mapping — lets us use `bg-surface-1`, `text-brand`, etc. */
+@theme inline {
+  /* Brand */
+  --color-brand: var(--brand);
+  --color-brand-hover: var(--brand-hover);
+  --color-brand-active: var(--brand-active);
+  --color-brand-soft: var(--brand-soft);
+
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-soft: var(--accent-soft);
+
+  /* Surfaces */
+  --color-surface-0: var(--surface-0);
+  --color-surface-1: var(--surface-1);
+  --color-surface-2: var(--surface-2);
+  --color-surface-3: var(--surface-3);
+
+  /* Text */
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-tertiary: var(--text-tertiary);
+
+  /* Borders */
+  --color-border-subtle: var(--border-subtle);
+  --color-border-default: var(--border-default);
+  --color-border-strong: var(--border-strong);
+
+  /* Semantic */
+  --color-success: var(--success);
+  --color-success-soft: var(--success-soft);
+  --color-warning: var(--warning);
+  --color-warning-soft: var(--warning-soft);
+  --color-danger: var(--danger);
+  --color-danger-soft: var(--danger-soft);
+
+  /* Legacy mappings — preserves existing component code while migration happens */
+  --color-background: var(--surface-0);
+  --color-foreground: var(--text-primary);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+/* Base reset */
+html {
+  scroll-behavior: smooth;
+  color-scheme: light;
+}
+
+html.dark {
+  color-scheme: dark;
+}
+
+body {
+  background: var(--surface-0);
+  color: var(--text-primary);
+  font-family: var(--font-geist-sans), system-ui, sans-serif;
+  transition: background-color 150ms ease, color 150ms ease;
+}
+
+/* Scrollbar — subtle, brand-aligned */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border-default);
+  border-radius: 10px;
+  border: 2px solid var(--surface-0);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--border-strong);
+}
+
+/* Focus-visible ring — brand-colored for all interactive elements */
+:where(button, a, input, select, textarea, [role="button"]):focus-visible {
+  outline: 2px solid var(--brand);
+  outline-offset: 2px;
+}
+
+/* Selection — brand tint */
+::selection {
+  background: var(--brand-soft);
+  color: var(--text-primary);
+}

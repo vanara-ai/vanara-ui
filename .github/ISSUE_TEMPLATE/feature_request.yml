@@ -1,0 +1,39 @@
+name: Feature request
+description: Suggest a new feature or UI improvement
+title: "[Feature]: "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for the idea! Please describe what you'd like to see and why.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem does this solve?
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+      description: Include mockups, user flow, or code sketches if relevant.
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+
+  - type: checkboxes
+    id: constraints
+    attributes:
+      label: Design principles (please confirm)
+      options:
+        - label: This feature does NOT require persisting the Groq API key server-side
+          required: true
+        - label: This feature works with or without Supabase auth configured (or explicitly requires auth)
+          required: true
