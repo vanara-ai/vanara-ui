@@ -11,7 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Unit test suite (31 tests via Vitest) covering BYOK header helpers (`buildHeaders`, `buildUserHeaders`), `handleResponse` error paths, and download-filename construction
 - `lib/filename.ts`: extracted pure filename-builder from `downloadOptimizedResume` for testability
 - `vitest.config.ts` with v8 coverage reporter configured for `app/**/*.ts` and `lib/**/*.ts`
-- `bun run test`, `bun run test:watch`, `bun run test:coverage` scripts
+- `npm run test`, `npm run test:watch`, `npm run test:coverage` scripts
 
 ### Changed
 - `buildHeaders`, `buildUserHeaders`, `handleResponse` are now named exports in `app/api.ts` (additive change; public API functions are unchanged)

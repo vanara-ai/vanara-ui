@@ -17,9 +17,9 @@ way to get oriented.
 ```bash
 git clone https://github.com/vanara-ai/vanara-serverui.git
 cd resumeaiui
-bun install           # or: npm install
+npm install
 cp .env.example .env.local
-bun run dev           # or: npm run dev
+npm run dev
 ```
 
 Open http://localhost:3000. In the **Set API key** modal, paste a key from
@@ -29,10 +29,10 @@ Open http://localhost:3000. In the **Set API key** modal, paste a key from
 Run checks:
 
 ```bash
-bun run lint          # ESLint
-bun run test          # vitest unit tests (31 tests, ~100ms)
-bun run build         # production build (includes type-check)
-bun x tsc --noEmit    # standalone type-check
+npm run lint         # ESLint
+npm run test         # vitest unit tests (31 tests, ~100ms)
+npm run build        # production build (includes type-check)
+npx tsc --noEmit     # standalone type-check
 ```
 
 ## Ways to Contribute
@@ -48,9 +48,9 @@ bun x tsc --noEmit    # standalone type-check
 2. **Keep PRs focused**: one concern per PR. Split UI and logic changes.
 3. **Run the full check locally:**
    ```bash
-   bun run lint
-   bun run test
-   bun run build
+   npm run lint
+   npm run test
+   npm run build
    ```
 4. **Fill in the PR template**: what, why, how tested.
 5. **Update the README** if you change public behavior (env vars, flows, API calls).

@@ -30,7 +30,7 @@ git clone https://github.com/vanara-ai/vanara-serverui.git
 cd resumeaiui
 
 # 2. install
-npm install        # or bun install / yarn
+npm install
 
 # 3. configure (Supabase is optional; see .env.example)
 cp .env.example .env.local
