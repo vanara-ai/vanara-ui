@@ -30,7 +30,7 @@ Run checks:
 
 ```bash
 npm run lint         # ESLint
-npm run test         # vitest unit tests (31 tests, ~100ms)
+npm run test         # vitest unit tests (40 tests, ~100ms)
 npm run build        # production build (includes type-check)
 npx tsc --noEmit     # standalone type-check
 ```
@@ -40,7 +40,7 @@ npx tsc --noEmit     # standalone type-check
 - **Bug reports / feature requests**: use the GitHub issue templates
 - **Code**: see "Pull Request Process" below
 - **Docs**: README, screenshots, UX walkthroughs, all welcome
-- **Design**: new resume templates, accessibility fixes, dark mode
+- **Design**: new TemplateSelector tile designs, accessibility fixes, dark mode
 
 ## Pull Request Process
 

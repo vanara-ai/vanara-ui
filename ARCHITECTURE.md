@@ -64,7 +64,7 @@ flowchart TD
 
 ```
 app/
-├── layout.tsx                  : Root: Geist fonts, AuthProvider, ApiKeysProvider
+├── layout.tsx                  : Root: Geist fonts, ThemeProvider, AuthProvider, ApiKeysProvider
 ├── page.tsx                    : Landing: hero, story, how-it-works, logos
 ├── dashboard/
 │   ├── page.tsx                : Main dashboard (Optimize · Parsed · History tabs)
@@ -81,8 +81,17 @@ app/
 │   ├── ParsedResumeManager.tsx : Smart Library CRUD
 │   ├── ResumePreviewModal.tsx  : Preview parsed resume as structured doc
 │   ├── ApiKeysModal.tsx        : Set / manage / clear Groq key
+│   ├── ThemeToggle.tsx         : Light / dark / system mode toggle
 │   └── VanaraLogo.tsx          : Brand text
 └── api.ts                      : Backend API client
+contexts/
+├── AuthContext.tsx             : Optional Supabase auth (exposes supabaseEnabled flag)
+├── ApiKeysContext.tsx          : BYOK localStorage-backed store for the Groq key
+└── ThemeContext.tsx            : Light / dark / system theme state
+lib/
+├── supabase.ts                 : Supabase client (null when env vars unset)
+├── filename.ts                 : Pure download-filename builder (testable)
+└── validateGroqKey.ts          : Groq API key format validator
 ```
 
 ## Request example: Optimize
