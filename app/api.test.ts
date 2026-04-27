@@ -132,4 +132,34 @@ describe("handleResponse", () => {
     })
     await expect(handleResponse(resp, "Bad request")).rejects.toThrow("Bad request")
   })
+
+  it("rejects suspiciously long detail as defense-in-depth (schema dump leak)", async () => {
+    const longDetail = "Error: " + "a".repeat(1000) + " json_validate_failed"
+    const resp = new Response(JSON.stringify({ detail: longDetail }), {
+      status: 400,
+      headers: { "Content-Type": "application/json" },
+    })
+    await expect(handleResponse(resp, "Brand-safe fallback")).rejects.toThrow(
+      "Brand-safe fallback",
+    )
+  })
+
+  it("accepts normal-length detail up to the limit", async () => {
+    const normalDetail = "Groq didn't recognize your API key. Check Settings."
+    const resp = new Response(JSON.stringify({ detail: normalDetail }), {
+      status: 401,
+      headers: { "Content-Type": "application/json" },
+    })
+    await expect(handleResponse(resp, "fallback")).rejects.toThrow(normalDetail)
+  })
+
+  it("rejects non-string detail (object / array payloads)", async () => {
+    const resp = new Response(JSON.stringify({ detail: { nested: "schema" } }), {
+      status: 400,
+      headers: { "Content-Type": "application/json" },
+    })
+    await expect(handleResponse(resp, "Safe fallback")).rejects.toThrow(
+      "Safe fallback",
+    )
+  })
 })

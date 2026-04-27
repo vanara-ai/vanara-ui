@@ -38,12 +38,21 @@ export function buildUserHeaders(auth: AuthHeaders): HeadersInit {
   return headers
 }
 
+// Defense-in-depth: any `detail` longer than this is treated as suspicious
+// (likely a raw schema dump or stack trace that slipped through the backend
+// sanitizer) and replaced with the caller's fallback message. Real
+// user-facing messages from the backend classifier fit comfortably under
+// this limit.
+const MAX_DETAIL_LENGTH = 300
+
 export async function handleResponse(response: Response, fallbackMessage: string) {
   if (!response.ok) {
     let detail = ""
     try {
       const data = await response.json()
-      detail = data?.detail ?? ""
+      const raw = typeof data?.detail === "string" ? data.detail : ""
+      // Strip anything over the limit (schema dumps, tracebacks, etc.).
+      detail = raw.length > MAX_DETAIL_LENGTH ? "" : raw
     } catch {
       // non-JSON body; ignore
     }
