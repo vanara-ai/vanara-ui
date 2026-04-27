@@ -56,7 +56,7 @@ The frontend talks to a backend on `NEXT_PUBLIC_API_BASE_URL`
 ```
 app/
 ├── page.tsx                    # Landing
-├── layout.tsx                  # Root providers (Auth + ApiKeys)
+├── layout.tsx                  # Root providers (Theme + Auth + ApiKeys)
 ├── dashboard/page.tsx          # Main app: upload, optimize, history
 ├── dashboard/FeedbackFAB.tsx   # Floating feedback widget
 ├── api.ts                      # Thin client for the backend
@@ -70,11 +70,16 @@ app/
     ├── ResumeHistory.tsx       # Supabase-only
     ├── InlineResumePicker.tsx  # Saved-resume picker in Optimize tab
     ├── ParsedResumeManager.tsx # Supabase-only: "Smart Library"
-    └── ResumePreviewModal.tsx
+    ├── ResumePreviewModal.tsx
+    └── ThemeToggle.tsx         # Light / dark / system mode toggle
 contexts/
 ├── AuthContext.tsx             # Supabase login (optional)
-└── ApiKeysContext.tsx          # BYOK localStorage-backed store
-lib/supabase.ts                 # Supabase client (null when unset)
+├── ApiKeysContext.tsx          # BYOK localStorage-backed store
+└── ThemeContext.tsx            # Light / dark / system theme state
+lib/
+├── supabase.ts                 # Supabase client (null when unset)
+├── filename.ts                 # Pure download-filename builder (testable)
+└── validateGroqKey.ts          # Groq API key format validator
 ```
 
 > 📖 **Deeper dive:** see [ARCHITECTURE.md](./ARCHITECTURE.md) for flow diagrams, state-management decisions, and full request sequence breakdown.
@@ -109,7 +114,7 @@ Verify it yourself; the relevant code is
 
 ```bash
 npm run lint            # ESLint + Next.js rules
-npm test                # 31 unit tests (vitest)
+npm test                # 40 unit tests (vitest)
 npm run build           # Production build (also runs type-check)
 ```
 
@@ -117,6 +122,7 @@ Tests cover:
 - **BYOK header helpers** (`buildHeaders`, `buildUserHeaders`): ensuring the Groq key only ever goes into `X-Groq-Key`
 - **Response handling**: backend `detail` errors propagate and fallback messages kick in on empty / non-JSON bodies
 - **Download filename builder**: company sanitization, extension stripping, fallback when no original filename is available
+- **Groq API key validation**: format checks (prefix, length, allowed chars) before requests are sent
 
 Runs in ~100ms. No DOM, no network. Pure-logic tests only.
 
