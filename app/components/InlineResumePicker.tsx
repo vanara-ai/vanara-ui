@@ -1,7 +1,11 @@
 "use client";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { DocumentTextIcon } from "@heroicons/react/24/outline";
+import {
+  DocumentTextIcon,
+  ChevronUpDownIcon,
+  CheckIcon,
+} from "@heroicons/react/24/outline";
 import { useAuth } from "@/contexts/AuthContext";
 import { useApiKeys } from "@/contexts/ApiKeysContext";
 import { getParsedResumes, type AuthHeaders } from "../api";
@@ -16,15 +20,10 @@ interface SavedResume {
 }
 
 interface InlineResumePickerProps {
-  /** Called when user selects a saved parsed resume */
   onSelectParsed: (resume: { id: string; filename: string }) => void;
-  /** Called when user uploads a new file */
   onFileChange: (file: File | null) => void;
-  /** Currently selected parsed resume (controlled) */
   selectedParsed: { id: string; filename: string } | null;
-  /** Currently selected file (controlled) */
   selectedFile: File | null;
-  /** Disable interactions during optimization */
   disabled?: boolean;
 }
 
@@ -39,6 +38,8 @@ export default function InlineResumePicker({
   const { groqKey } = useApiKeys();
   const [savedResumes, setSavedResumes] = useState<SavedResume[]>([]);
   const [loaded, setLoaded] = useState(false);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   const authHeaders = useCallback(
     (): AuthHeaders => ({
@@ -53,7 +54,6 @@ export default function InlineResumePicker({
     [groqKey, user],
   );
 
-  // Fetch saved resumes on mount (full mode only)
   useEffect(() => {
     if (!supabaseEnabled || !user) {
       setLoaded(true);
@@ -64,12 +64,23 @@ export default function InlineResumePicker({
         const res = await getParsedResumes(authHeaders());
         setSavedResumes(res.parsed_resumes || []);
       } catch {
-        // Silently degrade — just show uploader
+        // Silently degrade
       } finally {
         setLoaded(true);
       }
     })();
   }, [supabaseEnabled, user, authHeaders]);
+
+  // Close dropdown on outside click
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+        setDropdownOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, []);
 
   const formatDate = (s: string) =>
     new Date(s).toLocaleDateString("en-US", {
@@ -77,7 +88,9 @@ export default function InlineResumePicker({
       day: "numeric",
     });
 
-  // If a resume is already selected, show the confirmation card
+  const hasSaved = savedResumes.length > 0;
+
+  // Selected state: compact confirmation
   if (selectedParsed) {
     return (
       <motion.div
@@ -87,16 +100,12 @@ export default function InlineResumePicker({
         className="flex items-center justify-between rounded-lg border border-brand/30 bg-brand-soft px-4 py-3 dark:border-brand/30 dark:bg-brand/10"
       >
         <div className="flex items-center gap-3 min-w-0">
-          <svg className="h-5 w-5 flex-shrink-0 text-brand" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
+          <CheckIcon className="h-5 w-5 flex-shrink-0 text-brand" />
           <div className="min-w-0">
             <p className="truncate text-sm font-medium text-brand">
               {selectedParsed.filename}
             </p>
-            <p className="text-xs text-text-tertiary">
-              From your library (already parsed)
-            </p>
+            <p className="text-xs text-text-tertiary">From your library</p>
           </div>
         </div>
         <button
@@ -111,7 +120,6 @@ export default function InlineResumePicker({
     );
   }
 
-  // If a file is selected via upload, show file confirmation
   if (selectedFile) {
     return (
       <motion.div
@@ -126,9 +134,7 @@ export default function InlineResumePicker({
             <p className="truncate text-sm font-medium text-brand">
               {selectedFile.name}
             </p>
-            <p className="text-xs text-text-tertiary">
-              New upload (will be parsed during optimization)
-            </p>
+            <p className="text-xs text-text-tertiary">New upload</p>
           </div>
         </div>
         <button
@@ -143,66 +149,72 @@ export default function InlineResumePicker({
     );
   }
 
-  // Nothing selected — show picker
-  const hasSaved = savedResumes.length > 0;
-
+  // Nothing selected — show dropdown trigger + upload
   return (
     <div className="space-y-3">
-      {/* Saved resumes (full mode only) */}
-      <AnimatePresence>
-        {loaded && hasSaved && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.3, ease: EASE }}
+      {/* Dropdown selector for saved resumes */}
+      {loaded && hasSaved && (
+        <div ref={dropdownRef} className="relative">
+          <button
+            type="button"
+            disabled={disabled}
+            onClick={() => setDropdownOpen((v) => !v)}
+            className="flex w-full items-center justify-between rounded-lg border border-border-default bg-white px-4 py-3 text-left text-sm transition-colors hover:border-brand focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/30 disabled:opacity-50 dark:bg-surface-2"
           >
-            <p className="mb-2 text-xs font-medium uppercase tracking-wide text-text-tertiary">
-              Your resumes
-            </p>
-            <ul className="divide-y divide-border-subtle rounded-lg border border-border-subtle bg-white dark:bg-surface-2">
-              {savedResumes.map((r) => (
-                <li
-                  key={r.id}
-                  className="flex items-center justify-between gap-3 px-4 py-2.5"
-                >
-                  <div className="flex items-center gap-2.5 min-w-0">
-                    <DocumentTextIcon className="h-4 w-4 flex-shrink-0 text-text-tertiary" />
-                    <div className="min-w-0">
-                      <p className="truncate text-sm text-text-primary">
-                        {r.filename}
-                      </p>
-                      <p className="text-[11px] text-text-tertiary">
-                        {formatDate(r.updated_at)}
-                      </p>
-                    </div>
-                  </div>
-                  <button
-                    type="button"
-                    disabled={disabled}
-                    onClick={() => onSelectParsed({ id: r.id, filename: r.filename })}
-                    className="flex-shrink-0 rounded-md bg-brand px-3 py-1.5 text-xs font-semibold text-white transition-colors hover:bg-brand-hover disabled:opacity-50"
-                  >
-                    Use
-                  </button>
-                </li>
-              ))}
-            </ul>
+            <span className="text-text-tertiary">
+              Select from your library ({savedResumes.length})
+            </span>
+            <ChevronUpDownIcon className="h-5 w-5 text-text-tertiary" />
+          </button>
 
-            {/* Divider */}
-            <div className="relative my-3">
-              <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-border-subtle" />
-              </div>
-              <div className="relative flex justify-center">
-                <span className="bg-surface-1 px-3 text-xs text-text-tertiary dark:bg-surface-2">
-                  or upload new
-                </span>
-              </div>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+          <AnimatePresence>
+            {dropdownOpen && (
+              <motion.ul
+                initial={{ opacity: 0, y: -4 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -4 }}
+                transition={{ duration: 0.15, ease: EASE }}
+                className="absolute z-20 mt-1 max-h-56 w-full overflow-y-auto rounded-lg border border-border-subtle bg-white shadow-lg dark:bg-surface-2"
+              >
+                {savedResumes.map((r) => (
+                  <li key={r.id}>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        onSelectParsed({ id: r.id, filename: r.filename });
+                        setDropdownOpen(false);
+                      }}
+                      className="flex w-full items-center gap-3 px-4 py-2.5 text-left text-sm transition-colors hover:bg-brand-soft dark:hover:bg-brand/10"
+                    >
+                      <DocumentTextIcon className="h-4 w-4 flex-shrink-0 text-text-tertiary" />
+                      <div className="min-w-0 flex-1">
+                        <p className="truncate text-text-primary">{r.filename}</p>
+                        <p className="text-[11px] text-text-tertiary">
+                          {formatDate(r.updated_at)}
+                        </p>
+                      </div>
+                    </button>
+                  </li>
+                ))}
+              </motion.ul>
+            )}
+          </AnimatePresence>
+        </div>
+      )}
+
+      {/* Divider between dropdown and upload */}
+      {loaded && hasSaved && (
+        <div className="relative">
+          <div className="absolute inset-0 flex items-center">
+            <div className="w-full border-t border-border-subtle" />
+          </div>
+          <div className="relative flex justify-center">
+            <span className="bg-surface-1 px-3 text-xs text-text-tertiary dark:bg-surface-2">
+              or upload new
+            </span>
+          </div>
+        </div>
+      )}
 
       {/* Upload area */}
       {loaded && (
@@ -212,13 +224,6 @@ export default function InlineResumePicker({
           }}
           uploading={!!disabled}
         />
-      )}
-
-      {/* Subtle hint for first-time users in full mode */}
-      {loaded && !hasSaved && supabaseEnabled && user && (
-        <p className="text-center text-[11px] text-text-tertiary">
-          Your resume will be saved for future optimizations
-        </p>
       )}
     </div>
   );

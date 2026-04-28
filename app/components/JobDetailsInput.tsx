@@ -76,7 +76,7 @@ export default function JobDetailsInput({
           onChange={(e) => onJobDescriptionChange(e.target.value)}
           disabled={disabled}
           placeholder="Paste the full job description here…"
-          rows={8}
+          rows={10}
           className={`${inputBase} resize-y`}
         />
         <p className="mt-2 text-xs text-text-tertiary">

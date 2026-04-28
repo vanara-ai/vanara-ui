@@ -7,7 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [1.0.0] - 2026-04-26
+## [1.0.0] - 2026-04-28
+
+### Changed
+- Optimize tab: side-by-side two-column layout (resume + template left, job details right)
+- Resume picker: collapsed dropdown instead of full expanded list
+- Compare Changes: opens in a fullscreen modal overlay instead of inline scroll
+- Responsive layout adapts naturally to all screen sizes
 
 ### Added
 - Initial public release of Vanara.ai frontend (Next.js 15 + React 19)

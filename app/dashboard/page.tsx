@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import { motion } from "motion/react";
+import { motion, AnimatePresence } from "motion/react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useApiKeys } from "@/contexts/ApiKeysContext";
 import InlineResumePicker from "../components/InlineResumePicker";
@@ -273,65 +273,72 @@ export default function Dashboard() {
             }}
             className="space-y-5 sm:space-y-6"
           >
-            <motion.section
-              {...fadeUp}
-              transition={{ duration: 0.5, ease: EASE }}
-              className="rounded-xl border border-border-subtle bg-surface-1 p-5 sm:p-6 dark:bg-surface-2"
-            >
-              <h2 className="mb-4 text-base font-semibold sm:text-lg">
-                1. Resume
-              </h2>
-              <InlineResumePicker
-                selectedParsed={selectedParsedResume}
-                selectedFile={resume}
-                onSelectParsed={(r) => {
-                  if (r) {
-                    setSelectedParsedResume(r);
-                    setResume(null);
-                  } else {
-                    setSelectedParsedResume(null);
-                  }
-                }}
-                onFileChange={(f) => {
-                  setResume(f);
-                  setSelectedParsedResume(null);
-                }}
-                disabled={optimizing}
-              />
-            </motion.section>
+            {/* Two-column layout: Resume+Template left, Job right */}
+            <div className="grid grid-cols-1 gap-5 sm:gap-6 lg:grid-cols-2">
+              {/* Left column */}
+              <div className="space-y-5 sm:space-y-6">
+                <motion.section
+                  {...fadeUp}
+                  transition={{ duration: 0.5, ease: EASE }}
+                  className="rounded-xl border border-border-subtle bg-surface-1 p-5 sm:p-6 dark:bg-surface-2"
+                >
+                  <h2 className="mb-4 text-base font-semibold sm:text-lg">
+                    Resume
+                  </h2>
+                  <InlineResumePicker
+                    selectedParsed={selectedParsedResume}
+                    selectedFile={resume}
+                    onSelectParsed={(r) => {
+                      if (r) {
+                        setSelectedParsedResume(r);
+                        setResume(null);
+                      } else {
+                        setSelectedParsedResume(null);
+                      }
+                    }}
+                    onFileChange={(f) => {
+                      setResume(f);
+                      setSelectedParsedResume(null);
+                    }}
+                    disabled={optimizing}
+                  />
+                </motion.section>
 
-            <motion.section
-              {...fadeUp}
-              transition={{ duration: 0.5, ease: EASE }}
-              className="rounded-xl border border-border-subtle bg-surface-1 p-5 sm:p-6 dark:bg-surface-2"
-            >
-              <h2 className="mb-4 text-base font-semibold sm:text-lg">
-                2. Target job
-              </h2>
-              <JobDetailsInput
-                jobTitle={jobTitle}
-                company={company}
-                jobDescription={jobdesc}
-                onJobTitleChange={setJobTitle}
-                onCompanyChange={setCompany}
-                onJobDescriptionChange={setJobdesc}
-                disabled={optimizing}
-              />
-            </motion.section>
+                <motion.section
+                  {...fadeUp}
+                  transition={{ duration: 0.5, ease: EASE }}
+                  className="rounded-xl border border-border-subtle bg-surface-1 p-5 sm:p-6 dark:bg-surface-2"
+                >
+                  <h2 className="mb-4 text-base font-semibold sm:text-lg">
+                    Template
+                  </h2>
+                  <TemplateSelector
+                    selectedTemplate={selectedTemplate}
+                    onTemplateChange={setSelectedTemplate}
+                  />
+                </motion.section>
+              </div>
 
-            <motion.section
-              {...fadeUp}
-              transition={{ duration: 0.5, ease: EASE }}
-              className="rounded-xl border border-border-subtle bg-surface-1 p-5 sm:p-6 dark:bg-surface-2"
-            >
-              <h2 className="mb-4 text-base font-semibold sm:text-lg">
-                3. Template
-              </h2>
-              <TemplateSelector
-                selectedTemplate={selectedTemplate}
-                onTemplateChange={setSelectedTemplate}
-              />
-            </motion.section>
+              {/* Right column */}
+              <motion.section
+                {...fadeUp}
+                transition={{ duration: 0.5, ease: EASE }}
+                className="rounded-xl border border-border-subtle bg-surface-1 p-5 sm:p-6 dark:bg-surface-2"
+              >
+                <h2 className="mb-4 text-base font-semibold sm:text-lg">
+                  Target job
+                </h2>
+                <JobDetailsInput
+                  jobTitle={jobTitle}
+                  company={company}
+                  jobDescription={jobdesc}
+                  onJobTitleChange={setJobTitle}
+                  onCompanyChange={setCompany}
+                  onJobDescriptionChange={setJobdesc}
+                  disabled={optimizing}
+                />
+              </motion.section>
+            </div>
 
             {error && (
               <div
@@ -397,16 +404,8 @@ export default function Dashboard() {
                     )
                   }
                   showCompare
-                  onCompare={() => setShowComparison((v) => !v)}
+                  onCompare={() => setShowComparison(true)}
                 />
-                {showComparison && (
-                  <div className="mt-6">
-                    <ResumeComparison
-                      original={result.diff.original}
-                      optimized={result.diff.optimized}
-                    />
-                  </div>
-                )}
               </motion.section>
             )}
 
@@ -456,6 +455,54 @@ export default function Dashboard() {
 
       <FeedbackFAB />
       <ApiKeysModal open={keysOpen} onClose={() => setKeysOpen(false)} />
+
+      {/* Comparison Modal */}
+      <AnimatePresence>
+        {showComparison && result && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="fixed inset-0 z-50 flex items-start justify-center bg-black/50 backdrop-blur-sm"
+            onClick={() => setShowComparison(false)}
+          >
+            <motion.div
+              initial={{ opacity: 0, y: 24, scale: 0.97 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 24, scale: 0.97 }}
+              transition={{ duration: 0.3, ease: EASE }}
+              className="relative m-4 mt-8 flex max-h-[90vh] w-full max-w-5xl flex-col overflow-hidden rounded-2xl bg-surface-0 shadow-2xl dark:bg-surface-1 sm:m-6 sm:mt-12"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Modal header */}
+              <div className="flex items-center justify-between border-b border-border-subtle px-6 py-4">
+                <div>
+                  <h2 className="text-lg font-semibold text-text-primary">Compare changes</h2>
+                  <p className="text-xs text-text-tertiary">Original vs optimized, section by section</p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setShowComparison(false)}
+                  className="rounded-lg p-2 text-text-tertiary transition-colors hover:bg-surface-2 hover:text-text-primary"
+                  aria-label="Close comparison"
+                >
+                  <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              </div>
+              {/* Modal body — scrollable */}
+              <div className="flex-1 overflow-y-auto p-4 sm:p-6">
+                <ResumeComparison
+                  original={result.diff.original}
+                  optimized={result.diff.optimized}
+                />
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
