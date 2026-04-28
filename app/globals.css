@@ -3,7 +3,7 @@
 /* ============================================================================
    Vanara.ai Brand System — v1.0
    ============================================================================
-   Primary: Terracotta Orange (#F4A261) — used in both light and dark modes.
+   Primary: Terracotta Orange (#F4A261) — warm, energetic, memorable.
    Secondary: Forest Green (#2D5A3D) — used sparingly for success / confirmation.
    
    Dark mode activates via the `.dark` class on <html> (managed by ThemeContext).
@@ -20,6 +20,9 @@
   --brand-active: #D17F3E;
   --brand-soft: #FDEFE0;
   --brand-ring: rgba(244, 162, 97, 0.4);
+  --brand-on: #3D1F00;
+  --brand-btn: #1A1A1A;
+  --brand-btn-text: #FFFFFF;
 
   --accent: #2D5A3D;
   --accent-hover: #1F4027;
@@ -51,12 +54,15 @@
 }
 
 .dark {
-  /* Brand stays consistent — same hue, adjusted opacity contexts */
+  /* Brand — same orange, consistent across modes */
   --brand: #F4A261;
   --brand-hover: #F6B47E;
   --brand-active: #FAC89F;
   --brand-soft: #2A1D14;
   --brand-ring: rgba(244, 162, 97, 0.5);
+  --brand-on: #3D1F00;
+  --brand-btn: #F5F1E8;
+  --brand-btn-text: #1A1A1A;
 
   --accent: #7FB88D;
   --accent-hover: #95C69F;
@@ -94,6 +100,9 @@
   --color-brand-hover: var(--brand-hover);
   --color-brand-active: var(--brand-active);
   --color-brand-soft: var(--brand-soft);
+  --color-brand-on: var(--brand-on);
+  --color-brand-btn: var(--brand-btn);
+  --color-brand-btn-text: var(--brand-btn-text);
 
   --color-accent: var(--accent);
   --color-accent-hover: var(--accent-hover);

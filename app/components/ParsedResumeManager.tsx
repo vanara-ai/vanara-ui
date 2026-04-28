@@ -227,7 +227,7 @@ export default function ParsedResumeManager({ onSelectForOptimize }: ParsedResum
                   <button
                     type="button"
                     onClick={() => onSelectForOptimize({ id: r.id, filename: r.filename })}
-                    className="inline-flex min-h-[36px] items-center rounded-md bg-brand px-3 py-1.5 text-xs font-semibold text-white transition-colors hover:bg-brand-hover"
+                    className="inline-flex min-h-[36px] items-center rounded-md border-2 border-brand bg-transparent px-3 py-1.5 text-xs font-semibold text-brand transition-colors hover:bg-brand-soft"
                   >
                     Optimize
                   </button>

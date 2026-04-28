@@ -233,7 +233,7 @@ export default function ApiKeysModal({ open, onClose }: Props) {
                 type="button"
                 onClick={handleSave}
                 disabled={!draft.trim() || validating}
-                className="inline-flex min-h-[40px] items-center rounded-md bg-brand px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-brand-hover disabled:cursor-not-allowed disabled:opacity-50"
+                className="inline-flex min-h-[40px] items-center rounded-md border-2 border-brand bg-transparent px-4 py-2 text-sm font-semibold text-brand transition-colors hover:bg-brand-soft disabled:cursor-not-allowed disabled:opacity-50"
               >
                 {validating ? "Checking…" : "Save"}
               </button>

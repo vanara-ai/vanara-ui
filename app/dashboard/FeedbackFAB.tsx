@@ -151,7 +151,7 @@ export default function FeedbackFAB() {
         onClick={() => setMenuOpen((v) => !v)}
         aria-label={menuOpen ? "Close feedback menu" : "Open feedback menu"}
         aria-expanded={menuOpen}
-        className="fixed bottom-5 right-5 z-50 inline-flex h-12 w-12 items-center justify-center rounded-full bg-brand text-white shadow-lg transition-all hover:bg-brand-hover hover:shadow-xl sm:bottom-6 sm:right-6 sm:h-14 sm:w-14"
+        className="fixed bottom-5 right-5 z-50 inline-flex h-12 w-12 items-center justify-center rounded-full border-2 border-brand bg-transparent text-brand shadow-lg transition-all hover:bg-brand-soft hover:shadow-xl sm:bottom-6 sm:right-6 sm:h-14 sm:w-14"
       >
         {menuOpen ? (
           <XMarkIcon className="h-6 w-6" aria-hidden="true" />
@@ -237,7 +237,7 @@ export default function FeedbackFAB() {
                 type="button"
                 onClick={handleSend}
                 disabled={sending || success}
-                className="mt-4 inline-flex min-h-[44px] w-full items-center justify-center rounded-lg bg-brand px-4 py-2.5 text-sm font-medium text-white shadow-sm transition-all hover:bg-brand-hover hover:shadow-md disabled:cursor-not-allowed disabled:opacity-60"
+                className="mt-4 inline-flex min-h-[44px] w-full items-center justify-center rounded-lg border-2 border-brand bg-transparent px-4 py-2.5 text-sm font-medium text-brand transition-all hover:bg-brand-soft hover:shadow-md disabled:cursor-not-allowed disabled:opacity-60"
               >
                 {sending
                   ? "Sending…"

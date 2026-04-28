@@ -119,7 +119,7 @@ export default function Landing() {
           <button
             onClick={primaryCta}
             disabled={loading}
-            className="rounded-lg bg-brand px-8 py-3 text-base font-medium text-white shadow-sm transition-all hover:bg-brand-hover hover:shadow-md disabled:opacity-50"
+            className="rounded-lg border-2 border-brand bg-transparent px-8 py-3 text-base font-medium text-brand transition-all hover:bg-brand-soft hover:shadow-md disabled:opacity-50"
           >
             {loading ? "Loading…" : primaryLabel}
           </button>
@@ -363,7 +363,7 @@ export default function Landing() {
           <button
             onClick={primaryCta}
             disabled={loading}
-            className="rounded-lg bg-brand px-8 py-3 text-base font-medium text-white shadow-sm transition-all hover:bg-brand-hover hover:shadow-md disabled:opacity-50"
+            className="rounded-lg border-2 border-brand bg-transparent px-8 py-3 text-base font-medium text-brand transition-all hover:bg-brand-soft hover:shadow-md disabled:opacity-50"
           >
             {loading ? "Loading…" : primaryLabel}
           </button>

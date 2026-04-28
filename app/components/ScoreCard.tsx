@@ -216,7 +216,7 @@ const ScoreCard: React.FC<ScoreCardProps> = ({
         {downloadUrl && onDownload && (
           <button
             onClick={onDownload}
-            className="inline-flex min-h-[44px] flex-1 items-center justify-center gap-2 rounded-lg bg-brand px-5 py-2.5 text-sm font-medium text-white shadow-sm transition-all hover:bg-brand-hover hover:shadow-md"
+            className="inline-flex min-h-[44px] flex-1 items-center justify-center gap-2 rounded-lg border-2 border-brand bg-transparent px-5 py-2.5 text-sm font-medium text-brand transition-all hover:bg-brand-soft hover:shadow-md"
           >
             <ArrowDownTrayIcon className="h-4 w-4" aria-hidden="true" />
             Download optimized PDF

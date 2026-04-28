@@ -230,7 +230,7 @@ export default function ResumeHistory() {
           <button
             type="button"
             onClick={applyFilters}
-            className="inline-flex min-h-[36px] items-center rounded-md bg-brand px-4 py-1.5 text-sm font-medium text-white transition-colors hover:bg-brand-hover"
+            className="inline-flex min-h-[36px] items-center rounded-md border-2 border-brand bg-transparent px-4 py-1.5 text-sm font-medium text-brand transition-colors hover:bg-brand-soft"
           >
             Apply
           </button>

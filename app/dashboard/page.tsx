@@ -194,7 +194,7 @@ export default function Dashboard() {
               <button
                 type="button"
                 onClick={signInWithGoogle}
-                className="inline-flex min-h-[36px] items-center rounded-md bg-brand px-3 py-1.5 text-xs font-semibold text-white transition-colors hover:bg-brand-hover"
+                className="inline-flex min-h-[36px] items-center rounded-md border-2 border-brand bg-transparent px-3 py-1.5 text-xs font-semibold text-brand transition-colors hover:bg-brand-soft"
               >
                 Sign in
               </button>
@@ -354,7 +354,7 @@ export default function Dashboard() {
                 type="button"
                 onClick={handleOptimize}
                 disabled={optimizing || (!resume && !selectedParsedResume) || !jobdesc.trim()}
-                className="inline-flex min-h-[44px] w-full items-center justify-center rounded-lg bg-brand px-6 py-3 text-sm font-semibold text-white shadow-sm transition-all hover:bg-brand-hover hover:shadow-md disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto"
+                className="inline-flex min-h-[44px] w-full items-center justify-center rounded-lg border-2 border-brand bg-transparent px-6 py-3 text-sm font-semibold text-brand transition-all hover:bg-brand-soft hover:shadow-md disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto"
               >
                 {optimizing ? (
                   <>
