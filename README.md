@@ -109,7 +109,7 @@ Verify it yourself; the relevant code is
 
 ```bash
 npm run lint            # ESLint + Next.js rules
-npm test                # 31 unit tests (vitest)
+npm test                # unit tests (vitest)
 npm run build           # Production build (also runs type-check)
 ```
 
