@@ -405,6 +405,12 @@ export default function Landing() {
               </svg>
               Star on GitHub
             </a>
+            <a href="/privacy" className="hover:text-text-primary">
+              Privacy
+            </a>
+            <a href="/terms" className="hover:text-text-primary">
+              Terms
+            </a>
             <a
               href="mailto:vanara.ai@yahoo.com"
               className="hover:text-text-primary"
